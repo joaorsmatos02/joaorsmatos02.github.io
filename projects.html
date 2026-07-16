@@ -3,29 +3,33 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>projects.txt — João Matos</title>
+    <title>projects — João Matos</title>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<main class="term">
-    <p class="prompt sub">cat projects.txt</p>
+<div class="code">
+    <div class="t" data-t="section" data-attr='id="projects"'>
 
-    <div class="entry">
-        <div class="entry-head">
-            <span class="entry-title">Externalization of concretization and state merging policies in symbolic execution</span>
-            <span class="entry-date">August 2024 – November 2025</span>
+        <div class="cmt">Projects</div>
+
+        <div class="t entry" data-t="article">
+            <span class="t" data-t="h3">Externalization of concretization and state merging policies in symbolic execution</span>
+            <span class="t" data-t="time">August 2024 – November 2025</span>
+            <span class="t" data-t="em">Tool: AVD symbolic executor</span>
+            <div class="t" data-t="ul">
+                <span class="t" data-t="li">Implemented a modified version of the CS<sub>ML</sub> language for concretization policies</span>
+                <span class="t" data-t="li">Created a new language based on CS<sub>ML</sub> for the specification of merge policies, MC<sub>ML</sub></span>
+                <span class="t" data-t="li">Modified AVD, a symbolic engine created at Técnico, adding support for these languages</span>
+                <span class="t" data-t="li">Created a <a href="https://github.com/joaorsmatos02/SE-Modeling-Languages-vscode">VSCode extension</a> that supports linting and syntax highlighting for these languages</span>
+                <span class="t" data-t="li">Created a testing framework for symbolic execution engines</span>
+            </div>
         </div>
-        <div class="entry-sub">Tool: AVD symbolic executor</div>
-        <ul>
-            <li>Implemented a modified version of the CS<sub>ML</sub> language for concretization policies</li>
-            <li>Created a new language based on CS<sub>ML</sub> for the specification of merge policies, MC<sub>ML</sub></li>
-            <li>Modified AVD, a symbolic engine created at Técnico, adding support for these languages</li>
-            <li>Created a <a href="https://github.com/joaorsmatos02/SE-Modeling-Languages-vscode">VSCode extension</a> that supports linting and syntax highlighting for these languages</li>
-            <li>Created a testing framework for symbolic execution engines</li>
-        </ul>
+
     </div>
 
-    <p class="prompt back"><a href="index.html">cd ..</a></p>
-</main>
+    <div class="back">
+        <a class="t" data-t="a" data-attr='href="index.html"' href="index.html">index.html</a>
+    </div>
+</div>
 </body>
 </html>
