@@ -99,9 +99,15 @@ body {
     font-style: normal;
 }
 
+/* dim the date content but keep the <time> markup the same size as other tags */
 .t[data-t="time"] {
     color: #9a9a9a;
     font-size: 0.85rem;
+}
+
+.t[data-t="time"]::before, .t[data-t="time"]::after {
+    font-size: 15px;
+    color: var(--tag);
 }
 
 .t[data-t="p"] {
@@ -114,12 +120,26 @@ body {
     margin-top: 1.4rem;
 }
 
+/* section header: a code comment paired with a small readable title */
+.sec-head {
+    margin-top: 2rem;
+    margin-bottom: 0.3rem;
+}
+
+.sec-head:first-child {
+    margin-top: 0;
+}
+
 /* comments */
 .cmt {
     display: block;
     color: var(--dim);
     font-style: italic;
     margin-top: 1.4rem;
+}
+
+.sec-head .cmt {
+    margin-top: 0;
 }
 
 .cmt::before {
