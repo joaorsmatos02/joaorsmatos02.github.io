@@ -55,6 +55,65 @@ body {
     margin-left: 2ch;
 }
 
+/* ---- content takes on real typographic hierarchy ------------------- */
+
+.t[data-t="h1"] {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.3rem 0 1.2rem;
+}
+
+.t[data-t="h2"] {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 1.4rem 0 0.5rem;
+}
+
+.t[data-t="h3"] {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.4rem 0 0.15rem;
+}
+
+/* keep the tag markup around headings small and subtle */
+.t[data-t="h1"]::before, .t[data-t="h1"]::after,
+.t[data-t="h2"]::before, .t[data-t="h2"]::after,
+.t[data-t="h3"]::before, .t[data-t="h3"]::after {
+    font-size: 0.8rem;
+    font-weight: 400;
+    vertical-align: 0.15em;
+}
+
+/* the head's <title> is kept in markup for the browser tab but not shown on the page */
+.t[data-t="title"] {
+    display: none;
+}
+
+.t[data-t="em"] {
+    font-style: italic;
+    color: #bdbdbd;
+}
+
+.t[data-t="em"]::before, .t[data-t="em"]::after {
+    font-style: normal;
+}
+
+.t[data-t="time"] {
+    color: #9a9a9a;
+    font-size: 0.85rem;
+}
+
+.t[data-t="p"] {
+    margin: 0.6rem 0;
+    max-width: 68ch;
+}
+
+/* give each article some breathing room */
+.entry {
+    margin-top: 1.4rem;
+}
+
 /* comments */
 .cmt {
     display: block;
@@ -104,10 +163,6 @@ a:not(.t):hover {
 }
 
 /* ---- spacing tweaks ------------------------------------------------ */
-
-.entry {
-    margin-top: 0.5rem;
-}
 
 .back {
     margin-top: 2.5rem;
