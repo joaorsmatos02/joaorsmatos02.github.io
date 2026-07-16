@@ -3,6 +3,9 @@
     --fg: #ededed;
     --tag: #666666;
     --dim: #4f4f4f;
+    --leaf: #8db36a;
+    --wood: #c9b391;
+    --pot: #8a7355;
 }
 
 * {
@@ -190,4 +193,119 @@ a:not(.t):hover {
 
 sub {
     color: inherit;
+}
+
+/* ---- bonsai easter egg (type "bonsai") ----------------------------- */
+
+body.bonsai-open {
+    padding-right: calc(50vw + 1.25rem);
+}
+
+#bonsai-term {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50vw;
+    height: 100vh;
+    background: #060606;
+    border-left: 1px solid #2a2a2a;
+    box-shadow: -24px 0 50px rgba(0, 0, 0, 0.55);
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+    font-size: 13px;
+    line-height: 1.15;
+    color: var(--fg);
+}
+
+#bonsai-term.on {
+    display: flex;
+}
+
+#bonsai-term .bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #1f1f1f;
+    color: #7a7a7a;
+    font-size: 12px;
+    user-select: none;
+}
+
+#bonsai-term .bar .dots {
+    color: #444;
+    letter-spacing: 2px;
+}
+
+#bonsai-term .bar .x {
+    cursor: pointer;
+    margin-left: 0.5rem;
+    color: #7a7a7a;
+}
+
+#bonsai-term .bar .x:hover {
+    color: var(--fg);
+}
+
+#bonsai-term .body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0.6rem 0.8rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#bonsai-term .cmdline {
+    color: #8a8a8a;
+    margin-bottom: 0.35rem;
+    white-space: nowrap;
+}
+
+#bonsai-term .cmdline b {
+    color: var(--leaf);
+    font-weight: 400;
+}
+
+#bonsai-term .cur {
+    animation: bonsai-blink 1s steps(1) infinite;
+}
+
+@keyframes bonsai-blink {
+    50% { opacity: 0; }
+}
+
+#bonsai-term pre {
+    margin: 0;
+    flex: 1;
+    min-height: 0;
+    white-space: pre;
+    overflow: hidden;
+    font: inherit;
+    color: var(--wood);
+}
+
+#bonsai-term pre .leaf {
+    color: var(--leaf);
+}
+
+#bonsai-term pre .pot {
+    color: var(--pot);
+}
+
+#bonsai-term .hint {
+    color: #3a3a3a;
+    font-size: 11px;
+    margin-top: 0.3rem;
+}
+
+@media (max-width: 760px) {
+    body.bonsai-open {
+        padding-right: 1.25rem;
+    }
+
+    #bonsai-term {
+        width: 100vw;
+    }
 }
