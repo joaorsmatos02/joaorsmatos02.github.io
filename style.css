@@ -198,14 +198,14 @@ sub {
 /* ---- bonsai easter egg (type "bonsai") ----------------------------- */
 
 body.bonsai-open {
-    padding-right: calc(50vw + 1.25rem);
+    padding-right: calc(40vw + 1.25rem);
 }
 
 #bonsai-term {
     position: fixed;
     top: 0;
     right: 0;
-    width: 50vw;
+    width: 40vw;
     height: 100vh;
     background: #060606;
     border-left: 1px solid #2a2a2a;

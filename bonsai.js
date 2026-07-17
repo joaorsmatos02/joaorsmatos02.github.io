@@ -243,12 +243,21 @@
 
     /* -------- open / close ------------------------------------------ */
 
-    function open() {
+    // remember the open/closed state so it survives page navigations
+    function remember(isOpen) {
+        try {
+            if (isOpen) sessionStorage.setItem("bonsai", "1");
+            else sessionStorage.removeItem("bonsai");
+        } catch (e) { /* storage unavailable — no persistence, no harm */ }
+    }
+
+    function open(skipRemember) {
         if (running) return;
         if (!panel) build();
         running = true;
         panel.classList.add("on");
         document.body.classList.add("bonsai-open");
+        if (!skipRemember) remember(true);
         // let layout settle so measurements are correct
         var t = setTimeout(grow, 30);
         timers.push(t);
@@ -261,6 +270,7 @@
         panel.classList.remove("on");
         document.body.classList.remove("bonsai-open");
         if (pre) pre.innerHTML = "";
+        remember(false);
     }
 
     /* -------- keystroke trigger ------------------------------------- */
@@ -274,4 +284,9 @@
             if (buf === TRIGGER) open();
         }
     });
+
+    // reopen automatically if it was left open on the previous page
+    try {
+        if (sessionStorage.getItem("bonsai") === "1") open(true);
+    } catch (e) { /* storage unavailable */ }
 })();
