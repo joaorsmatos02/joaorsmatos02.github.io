@@ -68,7 +68,7 @@
         if (title) title.textContent = "cbonsai — joao@cs";
         var body = panel.querySelector(".body");
         body.innerHTML =
-            '<div class="cmdline">joao@cs:~$ <b>cbonsai --live --infinite</b><span class="cur">▏</span></div>' +
+            '<div class="cmdline">joao@cs:~$ <b>cbonsai --live --infinite</b> <span class="cur"> </span></div>' +
             '<pre></pre>';
         grower = window.Cbonsai.createGrower(body.querySelector("pre"));
     }
