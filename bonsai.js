@@ -244,20 +244,20 @@
     /* -------- open / close ------------------------------------------ */
 
     // remember the open/closed state so it survives page navigations
-    function remember(isOpen) {
+    function remember(isClosed) {
         try {
-            if (isOpen) sessionStorage.setItem("bonsai", "1");
-            else sessionStorage.removeItem("bonsai");
+            if (isClosed) sessionStorage.setItem("terminal-closed", "1");
+            else sessionStorage.removeItem("terminal-closed");
         } catch (e) { /* storage unavailable — no persistence, no harm */ }
     }
 
-    function open(skipRemember) {
+    function open() {
         if (running) return;
         if (!panel) build();
         running = true;
         panel.classList.add("on");
-        document.body.classList.add("bonsai-open");
-        if (!skipRemember) remember(true);
+        document.body.classList.add("terminal-open");
+        remember(false);
         // let layout settle so measurements are correct
         var t = setTimeout(grow, 30);
         timers.push(t);
@@ -268,14 +268,18 @@
         running = false;
         clearTimers();
         panel.classList.remove("on");
-        document.body.classList.remove("bonsai-open");
+        document.body.classList.remove("terminal-open");
         if (pre) pre.innerHTML = "";
-        remember(false);
+        remember(true);
     }
 
     /* -------- keystroke trigger ------------------------------------- */
 
-    var TRIGGER = "bonsai", buf = "";
+    try {
+        if (sessionStorage.getItem("terminal-closed") != "1") open();
+    } catch (e) { /* storage unavailable */ }
+
+    var TRIGGER = "cmd", buf = "";
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") { close(); return; }
         if (e.altKey || e.ctrlKey || e.metaKey) return;
@@ -285,8 +289,4 @@
         }
     });
 
-    // reopen automatically if it was left open on the previous page
-    try {
-        if (sessionStorage.getItem("bonsai") === "1") open(true);
-    } catch (e) { /* storage unavailable */ }
 })();
