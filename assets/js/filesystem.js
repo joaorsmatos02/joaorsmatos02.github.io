@@ -16,50 +16,15 @@
         home: D({
             joao: D({
                 "readme.txt": F(
-                    "you found the shell. nice.\n\n" +
-                    "this box just runs a bonsai screensaver — turns out its leaf\n" +
-                    "buffer had an overflow, and here you are.\n\n" +
-                    "look around:   ls        cat <file>     cd <dir>\n" +
-                    "get out:       exit      (or just press Esc)\n"
+                    "this cmd just runs a bonsai screensaver. they say its leaf\n" +
+                    "buffer has an overflow, but honestly i really dont feel like it does.\n" +
+                    "what a bunch of nerds.\n"
                 ),
-                "about.txt": F(
-                    "João Ricardo Silva Matos\n" +
-                    "PhD student — Instituto Superior Técnico (Lisbon) &\n" +
-                    "Carnegie Mellon University (Pittsburgh).\n" +
-                    "software security · program analysis · formal methods.\n\n" +
-                    "the rest of the site is my CV — try the nav on the left.\n"
-                ),
-                "research.txt": F(
-                    "interests: software security, program analysis, formal\n" +
-                    "methods, symbolic execution.\n\n" +
-                    "current work: externalizing concretization & state-merging\n" +
-                    "policies in a symbolic execution engine (AVD). designed the\n" +
-                    "CSml / MCml policy languages, a VSCode extension for them, and\n" +
-                    "a testing framework for SE engines.\n"
-                ),
-                "projects.txt": F(
-                    "- AVD symbolic executor — CSml / MCml policy languages\n" +
-                    "- SE-Modeling-Languages — VSCode extension\n" +
-                    "- this site — a view-source themed portfolio (+ a bonsai)\n\n" +
-                    "open the 'projects' page on the left for the full write-up.\n"
-                ),
-                "contact.txt": F(
-                    "email    joao.silva.matos@tecnico.ulisboa.pt\n" +
-                    "github   github.com/joaorsmatos02\n"
-                ),
-                "doom": F("\x7fELF\x02\x01\x01  ...  (executable — try running it)"),
-                ".bash_history": F(
-                    "cbonsai -l\n" +
-                    "sudo apt install cowsay\n" +
-                    "cd .corrupted\n" +
-                    "cat flag.txt\n" +
-                    "clear\n"
-                ),
+                "doom": F("\x7fELF\x02\x01\x01"),
                 ".corrupted": D({
                     "flag.txt": F(
                         "FLAG{h34p_0v3rfl0w_1n_th3_l34f_buff3r}\n\n" +
-                        "you actually dug this out. respect.\n" +
-                        "if you found it, tell me — jrm.\n"
+                        "if you found it, tell me — jm\n"
                     )
                 })
             })
