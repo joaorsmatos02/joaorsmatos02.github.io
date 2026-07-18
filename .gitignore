@@ -1,2 +1,0 @@
-# DOOM is fetched + built in CI (see .github/workflows/deploy.yml), not vendored.
-assets/doom/Dwasm/

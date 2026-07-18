@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>???</title>
+    <script src="assets/doom/jsdos/js-dos.js"></script>
     <style>
         html, body {
             margin: 0;
@@ -13,13 +14,17 @@
             overflow: hidden;
         }
 
-        #doom-frame {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            border: 0;
+        /* js-dos wraps the canvas in .dosbox-container; both fill the screen */
+        #jsdos, .dosbox-container, .dosbox-container canvas {
+            width: 100%;
+            height: 100%;
             display: block;
+        }
+
+        canvas {
+            user-select: none;
+            -webkit-user-select: none;
+            outline: none;
         }
 
         #doom-back {
@@ -42,9 +47,34 @@
 </head>
 <body>
 <a id="doom-back" href="index.html">&larr; back</a>
-<iframe id="doom-frame"
-        src="assets/doom/Dwasm/wasm/index.html"
-        title="Dwasm browser DOOM"
-        allow="fullscreen; autoplay; pointer-lock; gamepad"></iframe>
+<canvas id="jsdos"></canvas>
+<script>
+    // DOSBox renames the tab to "DOSBox" on boot — keep our own title.
+    (function lockTitle(t) {
+        var el = document.querySelector("title");
+        el.textContent = t;
+        var obs = new MutationObserver(function () {
+            if (el.textContent !== t) {
+                obs.disconnect();
+                el.textContent = t;
+                obs.observe(el, { childList: true, characterData: true, subtree: true });
+            }
+        });
+        obs.observe(el, { childList: true, characterData: true, subtree: true });
+    })("???");
+
+    // js-dos 6.22 (self-hosted, DOSBox-in-WASM) running the freely
+    // distributable shareware DOOM (DOOM.EXE + DOOM1.WAD in doom.zip).
+    Dos(document.getElementById("jsdos"), {
+        wdosboxUrl: "assets/doom/jsdos/wdosbox.js",
+        cycles: "max"
+    }).ready(function (fs, main) {
+        fs.extract("assets/doom/doom.zip").then(function () {
+            // Quitting DOOM drops to a DOS prompt; the trailing "exit" then
+            // shuts DOSBox down cleanly (the "← back" link is always available).
+            main(["-c", "DOOM.EXE", "-c", "exit"]);
+        });
+    });
+</script>
 </body>
 </html>
