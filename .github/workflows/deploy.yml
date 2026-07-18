@@ -9,15 +9,27 @@ permissions:
   pages: write
   id-token: write
 
+# Pinned dependency versions — bump these here to update the DOOM build.
+env:
+  DWASM_REF: ddf0347a4fc115b11ffb1c5710768b7c47c46698   # GMH-Code/Dwasm commit
+  EMSDK_VERSION: "3.1.64"                                # emscripten-core/emsdk
+  FREEDOOM_VERSION: "0.13.0"                             # freedoom/freedoom release
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
+
+      - name: Fetch Dwasm
+        run: |
+          rm -rf assets/doom/Dwasm
+          git init -q assets/doom/Dwasm
+          cd assets/doom/Dwasm
+          git remote add origin https://github.com/GMH-Code/Dwasm.git
+          git fetch -q --depth 1 origin "$DWASM_REF"
+          git checkout -q FETCH_HEAD
 
       - name: Install build dependencies
         run: |
@@ -27,45 +39,35 @@ jobs:
       - name: Install Emscripten SDK
         run: |
           git clone --depth 1 https://github.com/emscripten-core/emsdk.git /tmp/emsdk
-          pushd /tmp/emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-          source ./emsdk_env.sh
-          popd
-          echo "EMSDK=/tmp/emsdk" >> $GITHUB_ENV
-          echo "PATH=/tmp/emsdk/upstream/emscripten:/tmp/emsdk/node/14.20.0_64bit:$PATH" >> $GITHUB_ENV
+          cd /tmp/emsdk
+          ./emsdk install "$EMSDK_VERSION"
+          ./emsdk activate "$EMSDK_VERSION"
 
       - name: Fetch Freedoom IWAD
         run: |
           mkdir -p assets/doom/Dwasm/wasm/fs
-          latest=$(curl -sL https://api.github.com/repos/freedoom/freedoom/releases/latest | python3 -c 'import sys, json; print(json.load(sys.stdin)["tag_name"])')
-          version=${latest#v}
-          url="https://github.com/freedoom/freedoom/releases/download/${latest}/freedoom-${version}.zip"
-          echo "Downloading Freedoom release ${latest} from ${url}"
+          url="https://github.com/freedoom/freedoom/releases/download/v${FREEDOOM_VERSION}/freedoom-${FREEDOOM_VERSION}.zip"
+          echo "Downloading Freedoom ${FREEDOOM_VERSION} from ${url}"
           curl -L -o /tmp/freedoom.zip "$url"
           unzip -j /tmp/freedoom.zip "*freedoom1.wad" -d assets/doom/Dwasm/wasm/fs
           ls -lh assets/doom/Dwasm/wasm/fs
 
       - name: Build native prboomx.wad
         run: |
-          pushd assets/doom/Dwasm
-          mkdir -p build_native
-          cd build_native
+          cd assets/doom/Dwasm
+          mkdir -p build_native && cd build_native
           cmake .. -DCMAKE_BUILD_TYPE=Release
-          make -j$(nproc)
+          make -j"$(nproc)"
           cp prboomx.wad ../wasm/fs/
-          popd
 
       - name: Build Dwasm WebAssembly
         run: |
-          pushd assets/doom/Dwasm
           source /tmp/emsdk/emsdk_env.sh
-          mkdir -p build
-          cd build
+          cd assets/doom/Dwasm
+          mkdir -p build && cd build
           emcmake cmake .. -DCMAKE_BUILD_TYPE=Release
-          make -j$(nproc)
+          make -j"$(nproc)"
           cp index.* ../wasm/
-          popd
 
       - name: Prepare site
         run: |

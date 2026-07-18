@@ -1,6 +1,0 @@
-[submodule "assets/doom/Dwasm"]
-	path = assets/doom/Dwasm
-	url = https://github.com/GMH-Code/Dwasm.git
-[submodule "assets/doom/freedoom"]
-	path = assets/doom/freedoom
-	url = https://github.com/freedoom/freedoom.git
