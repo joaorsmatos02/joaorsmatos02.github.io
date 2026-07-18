@@ -136,7 +136,7 @@
      * ================================================================= */
 
     var CWD = HOME.slice();
-    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "doom", "./doom", "cbonsai", "exit", "sudo"];
+    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "./doom", "cbonsai", "exit", "sudo"];
     var shOut, shIn, shPs, shPre, shCur, shPost, history = [], histPos = 0;
 
     function promptText() { return "joao@cs:" + pathStr(CWD) + "$"; }
@@ -255,7 +255,7 @@
         "  cd [dir]        change directory",
         "  pwd             print working directory",
         "  whoami          who you are",
-        "  doom            launch DOOM in the browser",
+        "  ./doom          run the doom executable (if it's in this dir)",
         "  clear           clear the screen   (Ctrl+L)",
         "  exit            reload the shell"
     ].join("\n");
@@ -268,10 +268,14 @@
         "|____/ \\___/ \\___/|_|  |_|"
     ].join("\n");
 
+    // builtins are handled in the switch; anything containing a "/" is run as a
+    // path to an executable, and a bare name that isn't a builtin is a PATH
+    // lookup — nothing is on PATH here, so it just isn't found (like a real shell).
     function run(line) {
         var argv = line.trim().split(/\s+/).filter(Boolean);
         if (argv.length) {
             var cmd = argv[0], args = argv.slice(1);
+            if (cmd.indexOf("/") >= 0) { execPath(cmd); updatePrompt(); scrollBottom(); return; }
             switch (cmd) {
                 case "help": out(HELP); break;
                 case "ls": cmdLs(args); break;
@@ -281,16 +285,34 @@
                 case "whoami": out("joao"); break;
                 case "echo": out(args.join(" ")); break;
                 case "clear": shOut.innerHTML = ""; break;
-                case "doom": case "./doom": cmdDoom(); break;
                 case "cbonsai": case "exit": exitShell(); return;
                 case "sudo": out("nice try. this incident will be reported. :)", "sys"); break;
                 case "rm": out("rm: permission denied (this is a portfolio, please don't)", "err"); break;
                 case "cowsay": out(args.join(" ") || "moo", "sys"); break;
-                default: out(cmd + ": command not found", "err");
+                default: notFound(cmd);
             }
         }
         updatePrompt();
         scrollBottom();
+    }
+
+    // run an executable given by path: "./doom", "~/doom", "/home/joao/doom", ...
+    function execPath(arg) {
+        var p = resolve(arg, CWD), node = nodeAt(p);
+        if (!node) { out("sh: " + arg + ": No such file or directory", "err"); return; }
+        if (node.t === "dir") { out("sh: " + arg + ": Is a directory", "err"); return; }
+        if (!isExe(baseName(p))) { out("sh: " + arg + ": Permission denied", "err"); return; }
+        if (baseName(p) === "doom") { cmdDoom(); return; }
+        out("sh: " + arg + ": cannot execute binary file", "err");
+    }
+
+    // bare, non-builtin name: nothing is on PATH. If that executable happens to
+    // sit in the current directory, nudge toward the "./name" form.
+    function notFound(cmd) {
+        out(cmd + ": command not found", "err");
+        var node = nodeAt(resolve(cmd, CWD));
+        if (node && node.t === "file" && isExe(cmd))
+            out("('" + cmd + "' is right here — run it with ./" + cmd + ")", "sys");
     }
 
     function cmdLs(args) {
@@ -321,7 +343,7 @@
         var p = resolve(args[0], CWD), node = nodeAt(p);
         if (!node) { out("cat: " + args[0] + ": No such file or directory", "err"); return; }
         if (node.t === "dir") { out("cat: " + args[0] + ": Is a directory", "err"); return; }
-        if (isExe(baseName(p))) { out("cat: " + args[0] + ": binary file — try running it ('doom')", "sys"); return; }
+        if (isExe(baseName(p))) { out("cat: " + args[0] + ": binary file — try running it ('./doom')", "sys"); return; }
         out(node.c);
     }
 
@@ -336,7 +358,7 @@
         out("loading DOOM ...", "sys");
         var t = setTimeout(function () {
             out(DOOM, "ok");
-            out("[doom] launching browser engine...", "sys");
+            out("[doom] launching...", "sys");
             scrollBottom();
             window.location.href = "os.html";
         }, 650);

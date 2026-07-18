@@ -1,35 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="os">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>joao@cs</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=20260731"/>
     <script src="assets/doom/jsdos/js-dos.js"></script>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background: #000;
-            overflow: hidden;
-        }
-
-        /* js-dos wraps the canvas in .dosbox-container; both fill the screen */
-        #jsdos, .dosbox-container, .dosbox-container canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        canvas {
-            user-select: none;
-            -webkit-user-select: none;
-            outline: none;
-        }
-
-    </style>
 </head>
-<body>
+<body class="os">
 <canvas id="jsdos"></canvas>
 <script>
     // DOSBox renames the tab to "DOSBox" on boot — keep our own title.
@@ -54,6 +32,7 @@
     }).ready(function (fs, main) {
         fs.extract("assets/doom/doom.zip").then(function () {
             // Quitting DOOM drops to a DOS prompt; the trailing "exit" then
+            // shuts DOSBox down cleanly.
             main(["-c", "DOOM.EXE", "-c", "exit"]);
         });
     });
