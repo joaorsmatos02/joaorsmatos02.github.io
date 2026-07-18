@@ -49,8 +49,7 @@
         panel.innerHTML =
             '<div class="bar"><span class="title">cbonsai — joao@cs</span>' +
             '<span class="dots">● ● <span class="x" title="close (esc)">✕</span></span></div>' +
-            '<div class="body"></div>' +
-            '<div class="hint">esc to close</div>';
+            '<div class="body"></div>';
         document.body.appendChild(panel);
         panel.querySelector(".x").addEventListener("click", close);
         panel.addEventListener("click", function (e) {
