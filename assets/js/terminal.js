@@ -255,7 +255,6 @@
         "  cd [dir]        change directory",
         "  pwd             print working directory",
         "  whoami          who you are",
-        "  ./doom          run the doom executable (if it's in this dir)",
         "  clear           clear the screen   (Ctrl+L)",
         "  exit            reload the shell"
     ].join("\n");
