@@ -137,7 +137,7 @@
      * ================================================================= */
 
     var CWD = HOME.slice();
-    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "./doom", "cbonsai", "exit", "sudo"];
+    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "doom", "./doom", "cbonsai", "exit", "sudo"];
     var shOut, shIn, shPs, shPre, shCur, shPost, history = [], histPos = 0;
 
     function promptText() { return "joao@cs:" + pathStr(CWD) + "$"; }
@@ -256,6 +256,7 @@
         "  cd [dir]        change directory",
         "  pwd             print working directory",
         "  whoami          who you are",
+        "  doom            launch DOOM in the browser",
         "  clear           clear the screen   (Ctrl+L)",
         "  exit            reload the shell"
     ].join("\n");
@@ -281,7 +282,7 @@
                 case "whoami": out("joao"); break;
                 case "echo": out(args.join(" ")); break;
                 case "clear": shOut.innerHTML = ""; break;
-                case "./doom": cmdDoom(); break;
+                case "doom": case "./doom": cmdDoom(); break;
                 case "cbonsai": case "exit": exitShell(); return;
                 case "sudo": out("nice try. this incident will be reported. :)", "sys"); break;
                 case "rm": out("rm: permission denied (this is a portfolio, please don't)", "err"); break;
@@ -336,8 +337,9 @@
         out("loading DOOM ...", "sys");
         var t = setTimeout(function () {
             out(DOOM, "ok");
-            out("[doom] WAD not mounted — module coming soon. hold tight.", "sys");
+            out("[doom] launching browser engine...", "sys");
             scrollBottom();
+            window.location.href = "doom.html";
         }, 650);
         timers.push(t);
     }
