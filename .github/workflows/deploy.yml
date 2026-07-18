@@ -1,0 +1,38 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [testing]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# The site is fully static (DOOM runs via self-hosted js-dos in assets/doom/),
+# so there is nothing to build — we just package the files and deploy them.
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package site
+        run: |
+          mkdir public
+          cp -r *.html assets public/
+          touch public/.nojekyll
+
+      - name: Generate shell filesystem (~/site from the site's own source)
+        run: python3 scripts/gen-shell-fs.py public public/assets/fs.json
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
