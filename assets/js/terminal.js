@@ -339,7 +339,7 @@
             out(DOOM, "ok");
             out("[doom] launching browser engine...", "sys");
             scrollBottom();
-            window.location.href = "doom.html";
+            window.location.href = "os.html";
         }, 650);
         timers.push(t);
     }
