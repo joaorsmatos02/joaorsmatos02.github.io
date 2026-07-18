@@ -73,4 +73,17 @@
         nodeAt: nodeAt, resolve: resolve, pathStr: pathStr,
         baseName: baseName, isExe: isExe
     };
+
+    // Mount the site's own source at ~/site. The tree is generated at deploy
+    // time from the real files (see scripts/gen-shell-fs.py + the workflow) and
+    // fetched here. If it's missing (e.g. local dev), ~/site simply won't exist.
+    // nodeAt walks FS live, so attaching it after load is enough.
+    try {
+        fetch("assets/fs.json", { cache: "no-cache" })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (tree) {
+                if (tree && tree.t === "dir") FS.c.home.c.joao.c.site = tree;
+            })
+            .catch(function () { /* offline / not generated — no ~/site */ });
+    } catch (e) { /* fetch unavailable */ }
 })();

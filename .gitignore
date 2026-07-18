@@ -1,0 +1,3 @@
+# Generated at deploy time from the site's own source (see the workflow).
+# Also produced locally if you run scripts/gen-shell-fs.py to test.
+assets/fs.json
