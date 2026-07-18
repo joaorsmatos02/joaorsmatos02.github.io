@@ -136,7 +136,7 @@
      * ================================================================= */
 
     var CWD = HOME.slice();
-    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "./doom", "cbonsai", "exit", "sudo"];
+    var CMDS = ["help", "ls", "cat", "cd", "pwd", "whoami", "echo", "clear", "cbonsai", "exit", "sudo"];
     var shOut, shIn, shPs, shPre, shCur, shPost, history = [], histPos = 0;
 
     function promptText() { return "joao@cs:" + pathStr(CWD) + "$"; }
